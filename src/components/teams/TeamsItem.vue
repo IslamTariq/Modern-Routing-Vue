@@ -13,11 +13,11 @@ export default {
   computed: {
     teamMembersLink(){
       // way to route (no good one)
-     // return '/teams/' + this.id;
+     // return '/teams/' + this.id + '?sort=asc';
 
      //Another Way to route (the best one)
 
-     return {name: 'team-members' , params: {teamId: this.id}}
+     return {name: 'team-members' , params: {teamId: this.id}, query: {sort: 'asc'}}
     }
   }
 };

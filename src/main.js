@@ -3,6 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import TeamsLists from './components/teams/TeamsList.vue';
 import UsersList from './components/users/UsersList.vue';
 import TeamMembers from './components/teams/TeamMembers';
+import TeamsFooter from './components/teams/TeamsFooter.vue';
+import UsersFooter from './components/users/UsersFooter.vue';
 import App from './App.vue';
 
 const router = createRouter({
@@ -14,7 +16,7 @@ const router = createRouter({
     {
       name: 'teams',
       path: '/teams',
-      component: TeamsLists,
+      components: {default: TeamsLists, footer: TeamsFooter },
       children: [
         {
           name: 'team-members',
@@ -24,7 +26,7 @@ const router = createRouter({
         },
       ],
     }, //can use alias as alternative of redirect but won't get path on url
-    { name: 'users', path: '/users', component: UsersList },
+    { name: 'users', path: '/users', components: {default: UsersList, footer: UsersFooter} },
     // Dynamic Component, Manuplating Component by passing the props, Ordering also metters while passing the params to path.
     // By making props true we can take data as props from another component
 
@@ -32,6 +34,33 @@ const router = createRouter({
   ],
 
   LinkExactActiveClass: 'active',
+  // Manuplating Scrolling behaviour
+  scrollBehavior(_, _2, savedPosition)
+  {
+    if (savedPosition)
+    {
+      return savedPosition
+    }
+    return{ left: 0, top: 0};
+  }
+});
+
+// Navigation gaurd for authentications
+router.beforeEach(function(to, from, next)
+{
+  console.log('Global beforeEach');
+  console.log(to, from);
+
+  // if (to.name === 'team-members')
+  // {
+  //   next();
+  // }
+  // else {
+  //   next({name: 'team-members', params: {teamId: 't2'}});
+  // }
+
+  next();
+
 });
 const app = createApp(App);
 
